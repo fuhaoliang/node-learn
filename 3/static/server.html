@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>不分离式上传</h1>
+  <form action="" method="post" id="form" enctype="multipart/form-data">
+    文件名:
+    <input type="text" name="name">
+    <br>
+    测试表:
+    <input type="text" name="text" id="">
+    <br>
+    <input type="file" name="photo" accept="image/*">
+    <br>
+    <input type="file" name="testUpload" accept="image/*">
+    <br>
+    <button>Submit</button>
+  </form>
+  <script src="https://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+  <script>
+    let now = new Date()
+    let action = `/contest/${now.getFullYear()}/${now.getMonth()}`
+    $('#form').attr('action', action)
+  </script>
+</body>
+</html>
