@@ -1,27 +1,14 @@
 const express = require('express')
 const http = require('http')
-const bodyParser = require('body-parser')
-const formidable = require('formidable')
-const multer = require('multer')
+const cookieParser = require('cookie-parser')
 const app = express()
+const credentials = require('./credentials.js');
+const morgan = require('morgan')
+const env = app.get('env')
+console.info('env--->', env)
+app.use(require('cookie-parser')(credentials.cookieSecret))
+app.use(morgan('dev'))
 
-let storage = multer.diskStorage({
-  //设置上传后文件路径，uploads文件夹会自动创建。
-     destination: function (req, file, cb) {
-         cb(null, __dirname + '/uploads')
-    }, 
-  //给上传文件重命名，获取添加后缀名
-   filename: function (req, file, cb) {
-      var fileFormat = (file.originalname).split(".");
-      cb(null, file.fieldname + '-' + Date.now() + "." + fileFormat[fileFormat.length - 1]);
-   }
-})
-
-let upload = multer({
-  storage: storage
-})
-  //添加配置文件到m
-app.use(bodyParser())
 app.get('/about', (req, res) => {
   res.send('about')
 })
@@ -32,26 +19,20 @@ app.get('/error', (req, res) => {
 })
 
 app.get('/cookies', (req, res) => {
-  res.cookie('setCookies', '666')
+
+  res.cookie('monster', 'nom nom', { maxAge: 24*60*60*1000});
+  // secure: true 
+  res.cookie('signed_monster', 'nom nom', { signed: true,  httpOnly: true, maxAge: 24*60*60*1000 });
   res.send('I test set Cookies')
+
+  var monster = req.cookies.monster;
+  var signedMonster = req.signedCookies.signed_monster;
+  console.info('monster', monster)
+  console.info('signedMonster', signedMonster)
 })
 
-app.get('/server', (req, res) => {
-  res.status(200)
-  res.sendFile(__dirname + '/static/server.html')
-})
 
-app.get('/client', (req, res) => {
-  res.status(200)
-  res.sendFile(__dirname + '/static/client.html')
-})
 
-let cpUpload = upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'photos', maxCount: 8 }, { name:'ajaxPhoto', maxCount: 8}])
-app.post('/contest/:year/:month', cpUpload, (req, res, next) => {
-  console.info('files', req.files)
-  console.info('body', req.body);
-  res.send('ok')
-})
 // 提供一個api
 
 let tours= [{
