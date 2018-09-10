@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <h1>ajax上传图片</h1>
+    <div>
+      文件名称:
+      <input type="text" name="name" id="name">
+      <input type="file" name="ajaxPhoto" id="ajaxPhoto">
+      <button type="button" onclick="test()">submit</button>
+    </div>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+  <script>
+    function test() {
+      let name = $('#name').val()
+      let formData = new FormData()
+      formData.append('ajaxPhoto',$('#ajaxPhoto')[0].files[0]);
+      console.info('--->', name, formData)
+      let now = new Date()
+      let action = `/contest/${now.getFullYear()}/${now.getMonth()}`
+      $.ajax({
+          url: action,
+          type: 'POST',
+          cache: false,
+          data: formData,
+          processData: false,
+          contentType: false,
+      }).done(function(res) {
+          console.log(res)
+      }).fail(function(res) {
+          console.log(res)
+      });
+    }
+  
+  </script>
+</body>
+</html>
