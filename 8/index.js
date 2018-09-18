@@ -28,7 +28,7 @@ db.once('open', () => {
     },
     time: {
       type:Date,
-      default: Date.now
+      default: new Date((new Date()).getTime() + 8 * 60 * 60 * 1000)
     },
     email: {
       type: String,
@@ -83,7 +83,6 @@ db.once('open', () => {
   Model.update({age:34}, {$set:{age:16}}, {multi: true},(err, data)=> {
     console.info('updata', data);
   })
-  Model.runC
 })
 
 
