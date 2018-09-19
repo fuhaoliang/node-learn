@@ -2,8 +2,7 @@
  * Created by wangyipeng on 2017/9/27.
  */
 
-import {User} from '../db'
-console.info('User', User)
+const User = require('../db')
 const router = require('koa-router')()
 router.post('/login', (ctx, next) => {
   ctx.body = 'ok'

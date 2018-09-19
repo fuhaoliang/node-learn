@@ -87,8 +87,8 @@ module.exports = __webpack_require__(14);
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -98,9 +98,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  */
 var router = __webpack_require__(0)();
 router.get('/reporter', function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
     var logger;
-    return __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+    return __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -128,21 +128,16 @@ module.exports = router;
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__db__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__db___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__db__);
 /**
  * Created by wangyipeng on 2017/9/27.
  */
 
-
-console.info('User', __WEBPACK_IMPORTED_MODULE_0__db__["User"]);
+var User = __webpack_require__(9);
 var router = __webpack_require__(0)();
 router.post('/login', function (ctx, next) {
   ctx.body = 'ok';
   var msg = ctx.request.body;
-  var user = new __WEBPACK_IMPORTED_MODULE_0__db__["User"](Object.assign({}, msg));
+  var user = new User(Object.assign({}, msg));
   user.save(function (err, doc) {
     if (err) return console.info('err', err);
     console.info('数据插入成功');
@@ -281,6 +276,7 @@ module.exports = require("nuxt");
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
+"use strict";
 // 连接数据库
 var mongoose = __webpack_require__(12);
 mongoose.connect('mongodb://localhost:27017/myDB', { useNewUrlParser: true }, function (err) {
@@ -324,10 +320,7 @@ var Schema = mongoose.Schema({
 
 // 连接库
 var User = mongoose.model('userInfo', Schema);
-
-module.exports = {
-  User: User
-};
+module.exports = User;
 
 /***/ },
 /* 10 */
@@ -386,8 +379,8 @@ module.exports = require("regenerator-runtime");
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_koa___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_koa__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_nuxt__ = __webpack_require__(8);
@@ -398,11 +391,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 
 var start = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
     var _this = this;
 
     var app, host, port, config, nuxt, builder;
-    return __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+    return __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -436,8 +429,8 @@ var start = function () {
             __WEBPACK_IMPORTED_MODULE_3__autoRoutes__["a" /* default */].auto(app);
 
             app.use(function () {
-              var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
-                return __WEBPACK_IMPORTED_MODULE_0__Users_fuhaoliang_Desktop_nuxt_koa2_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.mark(function _callee(ctx, next) {
+                return __WEBPACK_IMPORTED_MODULE_0_D_fuhaoliang_node_nuxt_koa2_node_modules_babel_runtime_6_26_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:

@@ -12,7 +12,9 @@
     "cookie-parser": "^1.4.3",
     "cross-env": "^5.2.0",
     "express": "^4.16.3",
+    "mock-api": "^0.1.5",
     "mongoose": "^5.2.14",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "serve": "^10.0.1"
   }
 }

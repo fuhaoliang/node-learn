@@ -41,7 +41,4 @@ let Schema = mongoose.Schema({
 
 // 连接库
 const User = mongoose.model('userInfo', Schema)
-
-module.exports = {
-  User
-}
+module.exports = User
