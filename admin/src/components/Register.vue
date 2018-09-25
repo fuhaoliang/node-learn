@@ -5,8 +5,8 @@
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="ruleForm.userName"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
         <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
@@ -22,82 +22,87 @@
   </div>
 </template>
 <script>
+import Http from '../../helper/http'
 export default {
-  data() {
+  data () {
     let checkName = (rule, value, callback) => {
-      if(!value) {
-         return callback(new Error('用户名不能为空'));
+      if (!value) {
+        return callback(new Error('用户名不能为空'))
       }
-      callback();
+      callback()
     }
     let validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
-        callback();
+        callback()
       }
     }
     let validatePass2 = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请再次输入密码'));
-      } else if (value !== this.ruleForm2.pass) {
-        callback(new Error('两次输入密码不一致!'));
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.password) {
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
     }
     let checkAge = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('年龄不能为空'));
+        return callback(new Error('年龄不能为空'))
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
-          callback(new Error('请输入数字值'));
+          callback(new Error('请输入数字值'))
         } else {
           if (value < 18) {
-            callback(new Error('必须年满18岁'));
+            callback(new Error('必须年满18岁'))
           } else {
-            callback();
+            callback()
           }
         }
-      }, 1000);
-    };
+      }, 1000)
+    }
     return {
       ruleForm: {
         userName: '',
-        pass: '',
+        password: '',
         checkPass: '',
-        age: '',
+        age: ''
       },
       rules: {
         userName: [
-          { validator: checkName, trigger: 'blur' },
+          { validator: checkName, trigger: 'blur' }
         ],
-        pass: [
-          { validator: validatePass, trigger: 'blur' },
+        password: [
+          { validator: validatePass, trigger: 'blur' }
         ],
         checkPass: [
-          { validator: validatePass, trigger: 'blur' },
+          { validator: validatePass2, trigger: 'blur' }
         ],
         age: [
-          { validator: checkAge, trigger: 'blur' },
+          { validator: checkAge, trigger: 'blur' }
         ]
-      },
-    };
+      }
+    }
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    submitForm (formName) {
+      this.$refs[formName].validate( async (valid) => {
         if (valid) {
-          alert('submit!');
+          // this.UserLogin('123123')
+          let {userName ,password, age} = this.ruleForm
+          console.info(userName)
+          let data =  await Http.userHandle.userRegister({userName, password, age})
+          alert(data.msg)
         } else {
-          console.log('error submit!!');
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
@@ -110,4 +115,3 @@ export default {
   }
 }
 </style>
-

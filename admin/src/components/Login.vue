@@ -5,8 +5,8 @@
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="ruleForm.userName"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -19,54 +19,56 @@
 import { mapState, mapActions } from 'vuex'
 import Http from '../../helper/http'
 export default {
-  data() {
+  data () {
     let checkName = (rule, value, callback) => {
-      if(!value) {
-         return callback(new Error('用户名不能为空'));
+      if (!value) {
+        return callback(new Error('用户名不能为空'))
       }
-      callback();
+      callback()
     }
     let validatePass = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入密码'));
+        callback(new Error('请输入密码'))
       } else {
-        callback();
+        callback()
       }
     }
     return {
       ruleForm: {
         userName: '',
-        pass: '',
+        password: ''
       },
       rules: {
         userName: [
-          { validator: checkName, trigger: 'blur' },
+          { validator: checkName, trigger: 'blur' }
         ],
-        pass: [
-          { validator: validatePass, trigger: 'blur' },
+        password: [
+          { validator: validatePass, trigger: 'blur' }
         ]
-      },
-    };
+      }
+    }
   },
   computed: {
     ...mapState([])
   },
   methods: {
     ...mapActions(['UserLogin']),
-    submitForm(formName) {
-      this.$refs[formName].validate( async (valid) => {
+    submitForm (formName) {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.UserLogin('123123')
-          await Http.userHandle.userRegister()
-          alert('submit!');
+          // this.UserLogin('123123')
+          let {userName ,password} = this.ruleForm
+          console.info(userName)
+          let data = await Http.userHandle.userLogin({userName, password})
+          alert(data.msg)
         } else {
-          console.log('error submit!!');
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
@@ -79,4 +81,3 @@ export default {
   }
 }
 </style>
-

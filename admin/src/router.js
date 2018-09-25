@@ -1,8 +1,8 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Home from './views/Home.vue';
-import store from './store';
-Vue.use(Router);
+import Vue from 'vue'
+import Router from 'vue-router'
+import Home from './views/Home.vue'
+import store from './store'
+Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
@@ -11,7 +11,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: Home
     },
     {
       path: '/about',
@@ -27,25 +27,25 @@ const router = new Router({
     {
       path: '/sign',
       name: 'sign',
-      component: () => import(/* webpackChunkName: "sign" */ './views/Sign.vue'),
-    },
-  ],
-});
+      component: () => import(/* webpackChunkName: "sign" */ './views/Sign.vue')
+    }
+  ]
+})
 
-router.beforeEach((to, from, next)=> {
+router.beforeEach((to, from, next) => {
   // 统一追加参数
   let token = store.state.token
-  if(to.meta.requiresAuth){
+  if (to.meta.requiresAuth) {
     if (token) { // 判断用户token有效日期
       next()
     } else {
       next({
-        path:'/sign',
-        query:{
+        path: '/sign',
+        query: {
           redirect: to.fullPath
         }
       })
-    } 
+    }
   } else {
     next()
   }

@@ -1,4 +1,4 @@
-import gcontant from '../config/app'
+import { gcontant } from '../config/app'
 
 const userHandle = {
   host: gcontant.gateway,
@@ -21,5 +21,5 @@ const userHandle = {
 }
 
 export default {
-  userHandle,
+  userHandle
 }

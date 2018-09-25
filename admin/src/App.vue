@@ -14,7 +14,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'app',
   methods: {
-    ...mapActions(['UserLoginOut']),
+    ...mapActions(['UserLoginOut'])
   }
 }
 </script>
