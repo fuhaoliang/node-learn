@@ -1,5 +1,5 @@
 const User = require('../db')
-
+const createToken = require('../token/createToken')
 // 根据用户名查找用户
 const findUser = (userName) => {
   return new Promise((resolve, reject) => {
@@ -19,7 +19,18 @@ const findAllUsers = () => {
     })
   })
 }
-
+// 删除
+const delUser = function(id){
+  return new Promise(( resolve, reject) => {
+    User.findOneAndRemove({ _id: id }, (err, doc) => {
+      if(err){
+        reject(err);
+      }
+      console.log('删除用户成功');
+      resolve(doc);
+    });
+  });
+}
 // 注册
 const reg = async (ctx) => {
   let user = new User({
@@ -27,8 +38,18 @@ const reg = async (ctx) => {
     password: ctx.request.body.password,
     age: ctx.request.body.age,
     create_time: ctx.request.body.create_time,
-    token: '1234567'
+    token: createToken(ctx.request.body.userName)
   })
+
+  if(user.userName.length < 6 || user.userName.length > 12){
+    ctx.status = 200;
+    ctx.body = {
+      success: false,
+      code: -1,
+      msg: '用户名为6～12位'
+    };
+    return
+  }
 
   let isExist = await findUser(user.userName)
   if(!isExist){
@@ -61,11 +82,19 @@ const login = async (ctx) => {
   let doc = await findUser(userName)
   if (doc) {
     if (doc.password === password) {
+      let token = createToken(password)
+      await new Promise((resolve, reject) => {
+        doc.save(err => {
+          if (err) reject(err)
+          resolve()
+        })
+      })
       ctx.status = 200;
       ctx.body = {
         success: true,
         code: -1,
-        msg: '登陆成功'
+        msg: '登陆成功',
+        token: token
       }
     } else {
       ctx.status = 200;
@@ -87,6 +116,7 @@ const login = async (ctx) => {
 
 
 module.exports = {
+  delUser,
   login,
   reg,
   findUser,

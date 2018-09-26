@@ -12,7 +12,7 @@ const userHandle = {
   },
   getUser: {
     method: 'get',
-    url: '/api/user'
+    url: '/api/users'
   },
   delUser: {
     method: 'post',

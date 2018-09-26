@@ -4,6 +4,7 @@
 const router = require('koa-router')()
 const User = require('../db')
 const userTools = require('../tools/user')
+const checkToken = require('../token/checkToken')
 
 // 注册
 router.post('/register', async function (ctx, next) {
@@ -16,12 +17,27 @@ router.post('/login', async function (ctx, next) {
 })
 
 //获取用户
-router.get('/user', async function (ctx, next) {
-  ctx.body = 'user ok!'
+router.get('/users', async function (ctx, next) {
+  let data = await userTools.findAllUsers()
+  ctx.status = 200;
+  ctx.body = {
+    success: true,
+    code: -1,
+    data: data
+  };
 })
 
 //删除用户
 router.post('/delUser', async function (ctx, next) {
-  ctx.body = 'delUser ok!'
+  await checkToken(ctx, next)
+  let id = ctx.request.body.id
+  let doc = await userTools.delUser(id)
+  console.info(doc)
+  ctx.status = 200;
+  ctx.body = {
+    success: true,
+    code: -1,
+    msg:'删除'+ doc.userName
+  };
 })
 module.exports = router

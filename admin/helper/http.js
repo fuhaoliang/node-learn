@@ -1,7 +1,7 @@
 import axios from 'axios'
 import utils from './utils'
 import services from '../helper/services'
-
+import store from '../src/store'
 const https = require('https')
 
 const Agent = new https.Agent({
@@ -22,35 +22,35 @@ const jrAxios = axios.create({
     return status >= 200 && status < 404
   }
 })
-// // request拦截器
-// jrAxios.interceptors.request.use(
-//   // 存在token 添加token
-//   config => {
-//     if (store.state.token) {
-//       config.headers.Authorization = `token ${store.state.token}`
-//     } else {
+// request拦截器
+jrAxios.interceptors.request.use(
+  // 存在token 添加token
+  config => {
+    if (store.state.token) {
+      config.headers.Authorization = `token ${store.state.token}`
+    } else {
 
-//     }
-//     return config
-//   }
-// )
+    }
+    return config
+  }
+)
 
-// // respone拦截器
-// jrAxios.interceptors.response.use(
-//   response => response,
-//   error => {
-//     if (error.response) {
-//       switch (error.response.status) {
-//        case 401:
-//         router.replace({ //跳转到登录页面
-//          path: '/home',
-//          query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-//         })
-//       }
-//     }
-//     return Promise.reject(error.response)
-//   }
-// )
+// respone拦截器
+jrAxios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response) {
+      switch (error.response.status) {
+       case 401:
+        router.replace({ //跳转到登录页面
+         path: '/login',
+         query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        })
+      }
+    }
+    return Promise.reject(error.response)
+  }
+)
 
 const Http = {}
 

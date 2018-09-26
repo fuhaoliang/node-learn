@@ -56,13 +56,26 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          // this.UserLogin('123123')
           let {userName ,password} = this.ruleForm
           console.info(userName)
           let data = await Http.userHandle.userLogin({userName, password})
-          alert(data.msg)
+          if(data.success){
+            this.UserLogin(data.token)
+            this.$message({
+              type: 'success',
+              message: data.msg
+            })
+          } else {
+            this.$message({
+              type: 'info',
+              message: data.msg
+            })
+          }
         } else {
-          console.log('error submit!!')
+          this.$message({
+            type: 'info',
+            message: 'error submit!!'
+          })
           return false
         }
       })
