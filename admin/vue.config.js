@@ -1,5 +1,6 @@
 // vue.config.js 配置说明
 // 这里只列一部分，具体配置惨考文档啊
+const gcontant = require('./config/app').gcontant
 const path = require('path')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -50,7 +51,7 @@ module.exports = {
   // 它支持webPack-dev-server的所有选项
 
   devServer: {
-    port: 8081, // 端口号
+    port: gcontant.port, // 端口号
     host: 'localhost',
     https: false, // https:{type:Boolean}
     open: true, // 配置自动启动浏览器

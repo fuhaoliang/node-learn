@@ -15,7 +15,8 @@ const findAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find({}, (err, doc) => {
       if(err) reject(err)
-      resolve(doc)
+      reject(err)
+      // resolve(doc)
     })
   })
 }
@@ -23,9 +24,7 @@ const findAllUsers = () => {
 const delUser = function(id){
   return new Promise(( resolve, reject) => {
     User.findOneAndRemove({ _id: id }, (err, doc) => {
-      if(err){
-        reject(err);
-      }
+      if(err) reject(err);
       console.log('删除用户成功');
       resolve(doc);
     });

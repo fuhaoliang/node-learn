@@ -63,11 +63,18 @@
     },
     methods: {
       async deleteRow (index, rows) {
+        // Http.userHandle.delUser({id: rows[index]._id}).then(data => {
+        //   console.info('data1111', data)
+        //   rows.splice(index, 1);
+        // }).catch(err => {
+        //   console.info('err1111', err);
+        // })
         let data = await Http.userHandle.delUser({id: rows[index]._id})
+        console.info('data', data)
         if (data.success){
           rows.splice(index, 1);
         } else {
-          alert(data)
+          console.info('err1111--await', data)
         }
       }
     },

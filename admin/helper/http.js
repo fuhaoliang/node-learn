@@ -2,6 +2,8 @@ import axios from 'axios'
 import utils from './utils'
 import services from '../helper/services'
 import store from '../src/store'
+import router from '../src/router'
+import { Message } from 'element-ui'
 const https = require('https')
 
 const Agent = new https.Agent({
@@ -11,20 +13,19 @@ const Agent = new https.Agent({
 const jrAxios = axios.create({
   timeout: 8000,
   httpsAgent: Agent,
-  validateStatus (status) {
-    switch (status) {
-      case 500:
-        break
-      case 404:
-        break
-      default:
-    }
-    return status >= 200 && status < 404
-  }
+  // validateStatus (status) {
+  //   switch (status) {
+  //     case 500:
+  //       break
+  //     case 404:
+  //       break
+  //     default:
+  //   }
+  //   return status >= 200 && status < 404
+  // }
 })
 // request拦截器
 jrAxios.interceptors.request.use(
-  // 存在token 添加token
   config => {
     if (store.state.token) {
       config.headers.Authorization = `token ${store.state.token}`
@@ -35,20 +36,29 @@ jrAxios.interceptors.request.use(
   }
 )
 
+let tipMsg = {
+  '401': '请重新登录',
+  '403': '未授权'
+}
 // respone拦截器
 jrAxios.interceptors.response.use(
-  response => response,
+  response => {
+    console.info('response', response)
+    return response
+  },
   error => {
+    console.info('error-->respone拦截器', error.response)
     if (error.response) {
       switch (error.response.status) {
-       case 401:
+       case 401:;
+       case 403:
         router.replace({ //跳转到登录页面
-         path: '/login',
+         path: '/sign',
          query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
         })
       }
     }
-    return Promise.reject(error.response)
+    return Promise.resolve(error.response)
   }
 )
 
@@ -64,6 +74,7 @@ for (const i in services) {
     }
     const api = service[ind]
     Http[i][ind] = async function (params, isNeedStatus = false) {
+      let options = Object.assign({loading: false, show: false, error: true, mock: false, proxy: false}, options)
       let apiUrl = api.url
       const newParams = {}
       if (params) {
@@ -90,6 +101,28 @@ for (const i in services) {
           data,
           config
         )
+        let errorObj = {
+          status: {
+            code: -1,
+            message: 'Error: Network Error'
+          }
+        }
+        if (response) {
+          errorObj.status.code = response.status
+          errorObj.status.message = response.status + ' ' + (response.statusText ? response.statusText : tipMsg[response.status])
+          if (errorObj.status.code === 401) {
+            console.log('goto login')
+          }
+        }
+        if (response.status === 200) {
+  
+        } else {
+          response.data = errorObj
+          if (options.error) {
+            Message.error(errorObj.status.message)
+          }
+        }
+
         if (!isNeedStatus) {
           response = response.data
         }
