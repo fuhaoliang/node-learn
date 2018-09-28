@@ -7,7 +7,7 @@ const sha1 = require('sha1')
 let storage = multer.diskStorage({
   //文件保存路径
   destination: (req, file, cd) => {
-    cd(null, __dirname + '../../uploads')
+    cd(null, __dirname + '../../uploads/userAvatars')
   },
   //给上传文件重命名，获取添加后缀名
   filename: (req, file, cb) => {
@@ -18,6 +18,18 @@ let storage = multer.diskStorage({
 
 let uploadAvatars = multer({ storage }).single('file')
 // let cpUpload = upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'photos', maxCount: 8 }, { name:'ajaxPhoto', maxCount: 8}])
+
+// const uploadAvatars = async (ctx, next) => {
+//   ctx = await multer({ storage }).single('file')()
+//   console.info('ctx=====>', ctx)
+//   await new Promise((resolve, reject) => {
+//     User.update({userName:'111111'},{$set:{age:222}},(err, doc) => {
+//       if(err) reject(err)
+//       resolve(doc)
+//     })
+//   })
+//   await next()
+// }
 
 // 根据用户名查找用户
 const findUser = (userName) => {

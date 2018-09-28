@@ -94,8 +94,8 @@ export default {
           // this.UserLogin('123123')
           let {userName ,password, age} = this.ruleForm
           let data =  await Http.userHandle.userRegister({userName, password, age})
-          this.$emit('update:activeName', 'first')
-          alert(data.msg)
+          if (data.success) this.$emit('update:activeName', 'first')
+          this.$message(data.msg)
         } else {
           console.log('error submit!!')
           return false

@@ -7,8 +7,8 @@ const userTools = require('../tools/user')
 const checkToken = require('../token/checkToken')
 
 //上传头像
-router.post('/upload',userTools.uploadAvatars, (ctx, next) => {
-  console.info('files', ctx.req.file)
+router.post('/upload', userTools.uploadAvatars, async (ctx, next) => {
+  console.info('files', ctx.req)
   ctx.status = 200;
   ctx.body = {
     success: true,
