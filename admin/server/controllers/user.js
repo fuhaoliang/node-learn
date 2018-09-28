@@ -6,6 +6,17 @@ const User = require('../db')
 const userTools = require('../tools/user')
 const checkToken = require('../token/checkToken')
 
+//上传头像
+router.post('/upload',userTools.uploadAvatars, (ctx, next) => {
+  console.info('files', ctx.req.file)
+  ctx.status = 200;
+  ctx.body = {
+    success: true,
+    code: -1,
+    data: '666'
+  }
+})
+
 // 注册
 router.post('/register', async function (ctx, next) {
   ctx = await userTools.reg(ctx)

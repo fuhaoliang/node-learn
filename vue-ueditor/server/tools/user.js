@@ -1,23 +1,5 @@
 const User = require('../db')
 const createToken = require('../token/createToken')
-const multer = require('koa-multer')
-
-//上传头像
-let storage = multer.diskStorage({
-  //文件保存路径
-  destination: (req, file, cd) => {
-    cd(null, __dirname + '../../uploads')
-  },
-  //给上传文件重命名，获取添加后缀名
-  filename: (req, file, cb) => {
-    let fileFormat = (file.originalname).split(".");
-    cb(null, file.fieldname + '-' + Date.now() + "." + fileFormat[fileFormat.length - 1]);
- }
-})
-
-let uploadAvatars = multer({ storage }).single('file')
-// let cpUpload = upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'photos', maxCount: 8 }, { name:'ajaxPhoto', maxCount: 8}])
-
 // 根据用户名查找用户
 const findUser = (userName) => {
   return new Promise((resolve, reject) => {
@@ -133,7 +115,6 @@ const login = async (ctx) => {
 
 
 module.exports = {
-  uploadAvatars,
   delUser,
   login,
   reg,
