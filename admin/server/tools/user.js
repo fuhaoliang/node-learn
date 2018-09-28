@@ -1,6 +1,7 @@
 const User = require('../db')
 const createToken = require('../token/createToken')
 const multer = require('koa-multer')
+const sha1 = require('sha1')
 
 //上传头像
 let storage = multer.diskStorage({
@@ -33,8 +34,7 @@ const findAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find({}, (err, doc) => {
       if(err) reject(err)
-      reject(err)
-      // resolve(doc)
+      resolve(doc)
     })
   })
 }
@@ -52,7 +52,7 @@ const delUser = function(id){
 const reg = async (ctx) => {
   let user = new User({
     userName: ctx.request.body.userName,
-    password: ctx.request.body.password,
+    password: sha1(ctx.request.body.password),
     age: ctx.request.body.age,
     create_time: ctx.request.body.create_time,
     token: createToken(ctx.request.body.userName)
@@ -95,7 +95,7 @@ const reg = async (ctx) => {
 // 登陆
 const login = async (ctx) => {
   let userName = ctx.request.body.userName
-  let password = ctx.request.body.password
+  let password = sha1(ctx.request.body.password)
   let doc = await findUser(userName)
   if (doc) {
     if (doc.password === password) {

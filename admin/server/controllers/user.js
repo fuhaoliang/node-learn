@@ -41,7 +41,6 @@ router.get('/users', async function (ctx, next) {
 //删除用户
 router.post('/delUser', async function (ctx, next) {
   let ctxData = await checkToken(ctx, next)
-  console.info('ctxData', ctxData)
   if (ctxData.status !== 200) return ctx = ctxData
   let id = ctx.request.body.id
   let doc = await userTools.delUser(id)

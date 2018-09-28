@@ -11,6 +11,8 @@ const checktoken = async (ctx, next) => {
   let tokenContent;
   try {
     tokenContent = await jwt.verify(token, 'fuhaoliang')
+    ctx.status = 200;
+    return ctx
   } catch (err) {
     ctx.status = 403;
     ctx.message = 'nvalid token'

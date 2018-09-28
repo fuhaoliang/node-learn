@@ -24,6 +24,7 @@
 <script>
 import Http from '../../helper/http'
 export default {
+  props: ['activeName'],
   data () {
     let checkName = (rule, value, callback) => {
       if (!value) {
@@ -92,8 +93,8 @@ export default {
         if (valid) {
           // this.UserLogin('123123')
           let {userName ,password, age} = this.ruleForm
-          console.info(userName)
           let data =  await Http.userHandle.userRegister({userName, password, age})
+          this.$emit('update:activeName', 'first')
           alert(data.msg)
         } else {
           console.log('error submit!!')

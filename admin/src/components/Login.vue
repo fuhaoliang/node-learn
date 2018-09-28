@@ -66,6 +66,8 @@ export default {
               message: data.msg
             })
           } else {
+            console.info('data!!!!', data)
+            if (data.code === -10001) return
             this.$message({
               type: 'info',
               message: data.msg

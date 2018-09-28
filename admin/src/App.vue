@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/" exact>Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/sign">Login</router-link>
       <el-button type="danger" icon="el-icon-delete" circle class="loginout" @click="UserLoginOut()"></el-button>
@@ -32,7 +32,7 @@ export default {
   a {
     font-weight: bold;
     color: #2c3e50;
-    &.router-link-exact-active {
+    &.router-link-active {
       color: #42b983;
     }
   }

@@ -1,9 +1,9 @@
 
 module.exports = {
   gcontant: {
-    port: 8080,
+    port: 8088,
     env: 'prod',
     // 网关
-    gateway: 'http://localhost:8080'
+    gateway: 'http://localhost:8088'
   }
 }

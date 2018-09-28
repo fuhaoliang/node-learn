@@ -102,24 +102,27 @@ for (const i in services) {
           config
         )
         let errorObj = {
-          status: {
-            code: -1,
+          data: {
+            code: -10001,
             message: 'Error: Network Error'
           }
         }
         if (response) {
-          errorObj.status.code = response.status
-          errorObj.status.message = response.status + ' ' + (response.statusText ? response.statusText : tipMsg[response.status])
-          if (errorObj.status.code === 401) {
+          errorObj.data.code = response.status
+          errorObj.data.message = response.status + ' ' + (response.statusText ? response.statusText : tipMsg[response.status])
+          if (errorObj.data.code === 401) {
             console.log('goto login')
           }
+        } else {
+          response = {}
         }
-        if (response.status === 200) {
+        if (response.status === 200 ) {
   
         } else {
-          response.data = errorObj
+          response = errorObj
+          console.info('errorObj.data', errorObj.data)
           if (options.error) {
-            Message.error(errorObj.status.message)
+            Message.error(errorObj.data.message)
           }
         }
 
