@@ -65,7 +65,7 @@ const reg = async (ctx, file) => {
   if (file){
     let fileFormat = (file.originalname).split(".");
     let fileName =  ctx.body.userName + "." + fileFormat[fileFormat.length - 1]
-    userAvatarsUrl = __dirname + '../../uploads/userAvatars/' + fileName
+    userAvatarsUrl = '/userAvatars/' + fileName
   } else {
     ctx = ctx.req
   }
@@ -122,7 +122,15 @@ const login = async (ctx) => {
   let doc = await findUser(userName)
   if (doc) {
     if (doc.password === password) {
-      let token = createToken(password)
+      let token = createToken(doc.password)
+      let userAvatarUrl =`http://${global.server.host}:${global.server.port}${doc.userAvatar}`
+      let body = {
+        id: doc.id,
+        userName: doc.userName,
+        age: doc.age,
+        userAvatar: userAvatarUrl,
+        token: token
+      }
       await new Promise((resolve, reject) => {
         doc.save(err => {
           if (err) reject(err)
@@ -134,7 +142,7 @@ const login = async (ctx) => {
         success: true,
         code: -1,
         msg: '登陆成功',
-        token: token
+        body
       }
     } else {
       ctx.status = 200;

@@ -59,14 +59,14 @@ export default {
           let {userName ,password} = this.ruleForm
           console.info(userName)
           let data = await Http.userHandle.userLogin({userName, password})
+          console.info('data---->', data)
           if(data.success){
-            this.UserLogin(data.token)
+            this.UserLogin(data.body)
             this.$message({
               type: 'success',
               message: data.msg
             })
           } else {
-            console.info('data!!!!', data)
             if (data.code === -10001) return
             this.$message({
               type: 'info',

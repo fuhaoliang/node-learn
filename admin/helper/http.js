@@ -28,6 +28,7 @@ const jrAxios = axios.create({
 jrAxios.interceptors.request.use(
   config => {
     if (store.state.token) {
+      config.headers = {}
       config.headers.Authorization = `token ${store.state.token}`
     } else {
 
@@ -47,7 +48,7 @@ jrAxios.interceptors.response.use(
     return response
   },
   error => {
-    console.info('error-->respone拦截器', error.response)
+    console.info('error-->respone拦截器', error)
     if (error.response) {
       switch (error.response.status) {
        case 401:;
@@ -93,7 +94,7 @@ for (const i in services) {
       let response = {}
 
       console.info('serviceHost + apiUrl', serviceHost, apiUrl)
-      if (
+    if (
         api.method === 'put' ||
         api.method === 'post' ||
         api.method === 'patch'
@@ -131,7 +132,7 @@ for (const i in services) {
         if (!isNeedStatus) {
           response = response.data
         }
-      } else {
+    } else {
         config.params = newParams
         response = await jrAxios[api.method](serviceHost + apiUrl, config)
         if (!isNeedStatus) {

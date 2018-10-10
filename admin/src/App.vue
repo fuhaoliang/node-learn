@@ -4,15 +4,19 @@
       <router-link to="/" exact>Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/sign">Login</router-link>
+      <img class="userAvatar" :src="userInfo.userAvatar">
       <el-button type="danger" icon="el-icon-delete" circle class="loginout" @click="UserLoginOut()"></el-button>
     </div>
     <router-view/>
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'app',
+  computed: {
+    ...mapState(['userInfo'])
+  },
   methods: {
     ...mapActions(['UserLoginOut'])
   }
@@ -40,5 +44,12 @@ export default {
 .loginout{
   position: fixed;
   right: 20px;
+}
+.userAvatar{
+  position: absolute;
+  right: 70px;
+  top: 22px;
+  width: 40px;
+  height: 40px;
 }
 </style>

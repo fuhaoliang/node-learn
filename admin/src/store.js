@@ -11,15 +11,19 @@ export default new Vuex.Store({
   },
   mutations: {
     LOGIN: (state, data) => {
-      state.token = data
-      window.localStorage.setItem('token', data)
+      state.token = data.token
+      state.userInfo = data
+      window.localStorage.setItem('token', data.token)
+      window.localStorage.setItem('userInfo',JSON.stringify(data))
       let { redirect } = router.currentRoute.query
       router.push({ path: redirect })
       console.info('redirect', redirect)
     },
     LOGINOUT: (state) => {
       state.token = ''
+      state.userInfo = {}
       window.localStorage.clear('token')
+      window.localStorage.clear('userInfo')
     }
   },
   actions: {

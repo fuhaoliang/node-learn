@@ -12,6 +12,14 @@ app.use(bodyParser())
 
 AutoRoutes.auto(app)
 
-app.listen(8888, () => {
-  console.log(`The server is running at http://localhost:${8888}`)
+const server = app.listen(8888, 'localhost', function () {
+  const host = server.address().address
+  const port = server.address().port
+  global.server = {
+    host: host,
+    port: port
+  }
+  console.info('server.address()', server.address())
+  console.log("应用实例，访问地址为 http://%s:%s", host, port)
 })
+
