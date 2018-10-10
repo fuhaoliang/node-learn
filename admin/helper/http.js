@@ -73,7 +73,7 @@ for (const i in services) {
       continue
     }
     const api = service[ind]
-    Http[i][ind] = async function (params, isNeedStatus = false) {
+    Http[i][ind] = async function (params, headers, isNeedStatus = false) {
       let options = Object.assign({loading: false, show: false, error: true, mock: false, proxy: false}, options)
       let apiUrl = api.url
       const newParams = {}
@@ -87,7 +87,9 @@ for (const i in services) {
         })
       }
       const data = newParams
-      const config = {}
+      const config = {
+        headers: headers,
+      }
       let response = {}
 
       console.info('serviceHost + apiUrl', serviceHost, apiUrl)

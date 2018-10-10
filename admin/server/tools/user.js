@@ -2,7 +2,6 @@ const User = require('../db')
 const createToken = require('../token/createToken')
 const multer = require('koa-multer')
 const sha1 = require('sha1')
-
 //上传头像
 let storage = multer.diskStorage({
   //文件保存路径
@@ -13,7 +12,7 @@ let storage = multer.diskStorage({
   filename: (req, file, cb) => {
     let fileFormat = (file.originalname).split(".");
     cb(null, file.fieldname + '-' + Date.now() + "." + fileFormat[fileFormat.length - 1]);
- }
+  }
 })
 
 let uploadAvatars = multer({ storage }).single('file')
@@ -35,7 +34,7 @@ let uploadAvatars = multer({ storage }).single('file')
 const findUser = (userName) => {
   return new Promise((resolve, reject) => {
     User.findOne({ userName }, (err, doc) => {
-      if(err) reject(err)
+      if (err) reject(err)
       resolve(doc)
     })
   })
@@ -45,63 +44,75 @@ const findUser = (userName) => {
 const findAllUsers = () => {
   return new Promise((resolve, reject) => {
     User.find({}, (err, doc) => {
-      if(err) reject(err)
+      if (err) reject(err)
       resolve(doc)
     })
   })
 }
 // 删除
-const delUser = function(id){
-  return new Promise(( resolve, reject) => {
+const delUser = function (id) {
+  return new Promise((resolve, reject) => {
     User.findOneAndRemove({ _id: id }, (err, doc) => {
-      if(err) reject(err);
+      if (err) reject(err);
       console.log('删除用户成功');
       resolve(doc);
     });
   });
 }
 // 注册
-const reg = async (ctx) => {
+const reg = async (ctx, file) => {
+  let userAvatarsUrl = ''
+  if (file){
+    let fileFormat = (file.originalname).split(".");
+    let fileName =  ctx.body.userName + "." + fileFormat[fileFormat.length - 1]
+    userAvatarsUrl = __dirname + '../../uploads/userAvatars/' + fileName
+  } else {
+    ctx = ctx.req
+  }
+  console.info('userAv atarsUrl', userAvatarsUrl, ctx.body);
   let user = new User({
-    userName: ctx.request.body.userName,
-    password: sha1(ctx.request.body.password),
-    age: ctx.request.body.age,
-    create_time: ctx.request.body.create_time,
-    token: createToken(ctx.request.body.userName)
+    userName: ctx.body.userName,
+    password: sha1(ctx.body.password),
+    age: ctx.body.age,
+    create_time: ctx.body.create_time,
+    token: createToken(ctx.body.userName),
+    userAvatar: userAvatarsUrl
   })
 
-  if(user.userName.length < 6 || user.userName.length > 12){
+  ctx.username = user.userName
+  if (user.userName.length < 6 || user.userName.length > 12) {
     ctx.status = 200;
-    ctx.body = {
-      success: false,
+    ctx.body = {
+      success: false,
       code: -1,
       msg: '用户名为6～12位'
-    };
-    return
+    };
+    return ctx
   }
 
   let isExist = await findUser(user.userName)
-  if(!isExist){
+  if (!isExist) {
     await new Promise((resolve, reject) => {
       user.save((err, doc) => {
-        if(err) reject(err)
+        if (err) reject(err)
         resolve(doc)
       })
     })
     ctx.status = 200;
-    ctx.body = {
-      success: true,
+    ctx.body = {
+      success: true,
       code: -1,
       msg: '注册成功'
-    };
+    };
   } else {
     ctx.status = 200;
-    ctx.body = {
-      success: false,
+    ctx.body = {
+      success: false,
       code: -1,
       msg: '用户名字已存在'
-    };
+    };
   }
+  return ctx
 }
 
 // 登陆
@@ -119,27 +130,27 @@ const login = async (ctx) => {
         })
       })
       ctx.status = 200;
-      ctx.body = {
-        success: true,
+      ctx.body = {
+        success: true,
         code: -1,
         msg: '登陆成功',
         token: token
-      }
+      }
     } else {
       ctx.status = 200;
-      ctx.body = {
-        success: false,
+      ctx.body = {
+        success: false,
         code: -1,
         msg: '密码错误'
-      }
+      }
     }
   } else {
     ctx.status = 200;
-    ctx.body = {
-      success: false,
+    ctx.body = {
+      success: false,
       code: -1,
       msg: '用户不存在'
-    }
+    }
   }
 }
 

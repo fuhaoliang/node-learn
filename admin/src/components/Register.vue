@@ -14,6 +14,22 @@
       <el-form-item label="年龄" prop="age">
         <el-input v-model.number="ruleForm.age"></el-input>
       </el-form-item>
+      <el-form-item label="头像" prop="avater">
+        <el-upload
+          :on-change="handleChange"
+          :class="{disabled:uploadDisabled}"
+          :file-list="imagelist"
+          action="/api/upload"
+          list-type="picture-card"
+          :on-preview="handlePictureCardPreview"
+          :on-remove="handleRemove"
+          :auto-upload="false">
+          <i class="el-icon-plus"></i>
+        </el-upload>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -23,6 +39,7 @@
 </template>
 <script>
 import Http from '../../helper/http'
+import axios from 'axios'
 export default {
   props: ['activeName'],
   data () {
@@ -65,6 +82,11 @@ export default {
       }, 1000)
     }
     return {
+      file: {},
+      uploadDisabled: false,
+      imagelist: [],
+      dialogImageUrl: '',
+      dialogVisible: false,
       ruleForm: {
         userName: '',
         password: '',
@@ -88,14 +110,45 @@ export default {
     }
   },
   methods: {
+    handleChange (file, fileList) {
+      this.uploadDisabled = fileList.length > 0
+      this.file = file
+      console.info('file', file, fileList);
+    },
+    handleRemove(file, fileList) {
+      document.querySelector('.el-upload__input').value = ''
+      this.uploadDisabled = fileList.length > 0
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     submitForm (formName) {
       this.$refs[formName].validate( async (valid) => {
         if (valid) {
           // this.UserLogin('123123')
           let {userName ,password, age} = this.ruleForm
-          let data =  await Http.userHandle.userRegister({userName, password, age})
-          if (data.success) this.$emit('update:activeName', 'first')
-          this.$message(data.msg)
+          let formData = new FormData();
+          formData.append('userName', userName);
+          formData.append('password', password);
+          formData.append('age', age);
+          formData.append('file', document.querySelector('.el-upload__input').files[0]);
+          // let data =  await Http.userHandle.userRegister({userName, password, age})
+          // let data = await Http.userHandle.userRegister(formData, {
+          //   'Content-Type': 'multipart/form-data'
+          // })
+          axios.post('/api/register', formData)
+          .then(({data}) => {
+            this.$message.info(data.msg);
+          })
+          .catch(error => {
+            this.$message.error(error.message);
+          });
+
+
+          // if (data.success) this.$emit('update:activeName', 'first')
+          // this.$message(data.msg)
         } else {
           console.log('error submit!!')
           return false
@@ -108,11 +161,37 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 #login{
   form{
     width: 70%;
     margin: 0 auto;
   }
 }
+.disabled .el-upload--picture-card {
+  display:none !important;
+}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+  }
+  .avatar {
+    width: 45px;
+    height: 45px;
+    display: block;
+  }
 </style>
