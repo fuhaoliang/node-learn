@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>websocket - api</h1>
+  <script>
+    // 1:连接服务器
+    var ws = new WebSocket('ws://echo.websocket.org')
+    // 2:状态判断
+    switch (ws.readyState) {
+      case ws.CONNECTING:
+        console.info('正在连接');
+      break;
+      case ws.OPEN:
+        console.info('连接成功');
+      break;
+      case ws.CLOSING:
+        console.info('连接正在关闭')
+      break;
+      case ws.CLOSED:
+        console.info('连接关闭')
+      break;
+    }
+
+    ws.onopen = function(evt) {
+      console.info('连接成功!!');
+      ws.send('Hello Server!')
+    }
+
+    ws.onmessage = function(evt) {
+      console.info('ws服务器接受的消息：' + evt.data)
+      ws.close()
+    }
+
+    ws.onclose = function(evt) {
+      console.info('连接关闭')
+    }
+  </script>
+
+</body>
+</html>

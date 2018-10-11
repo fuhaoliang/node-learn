@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      #box{
+        margin-top: 40px;
+        width: 500px;
+        height: 400px;
+        overflow-y: auto;
+        border:1px solid #000;
+      }
+      p{
+        margin:10px 0;
+      }
+      .red{
+        color:red;
+      }
+    </style>
+</head>
+<body>
+    <input type="text" id="content" />
+    <input type="text" id='username' placeholder='用户名字' />
+    <input type="submit" value="发送" id="send" />
+    <input type="button" value="关闭" id="close" />
+    <div id="box"></div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    /* 封装 WebSocket 实例化的方法  */
+    var CreateWebSocket = (function () {
+        return function (urlValue) {
+            if(window.WebSocket) return new WebSocket(urlValue);
+            if(window.MozWebSocket) return new MozWebSocket(urlValue);
+            return false;
+        }
+    })();
+    /* 实例化 WebSocket 连接对象, 地址为 ws 协议 */
+    var webSocket = CreateWebSocket("ws://localhost");
+    /* 接收到服务端的消息时 */
+    webSocket.onmessage = function (msg) {
+      var data = JSON.parse(msg.data)
+      var dom = `<div><b>${data.username}</b>说：<span>${data.msg}</span><p>↑${data.time}</p></div>`
+      $('#box').append(dom)
+      $("#box").scrollTop($("#box")[0].scrollHeight);
+      console.log(`${data.username}说：${data.msg}------> ${data.time}`);
+    };
+    /* 关闭时 */
+    webSocket.onclose = function () {
+        console.log("关闭连接");
+    };
+    /* 发送消息 */
+    document.getElementById("send").onclick = function () {
+        var str = document.getElementById("content").value;
+        var username = document.getElementById('username').value
+        var obj = {
+            username: username,
+            msg: str,
+            time: dateToStr(new Date())
+          }
+        webSocket.send(JSON.stringify(obj));
+        var dom = `<div><b class='red'>${obj.username}</b>说：<span>${obj.msg}</span><p>↑${obj.time}</p></div>`
+        $('#box').append(dom)
+        $("#box").scrollTop($("#box")[0].scrollHeight);
+    }
+    /* 关闭消息 */
+    document.getElementById("close").addEventListener("click", function () {
+        webSocket.close();
+    });
+
+
+    function dateToStr(datetime){ 
+      var year = datetime.getFullYear();
+      var month = datetime.getMonth()+1;//js从0开始取 
+      var date = datetime.getDate(); 
+      var hour = datetime.getHours(); 
+      var minutes = datetime.getMinutes(); 
+      var second = datetime.getSeconds();
+      if(month<10){
+      month = "0" + month;
+      }
+      if(date<10){
+      date = "0" + date;
+      }
+      if(hour <10){
+      hour = "0" + hour;
+      }
+      if(minutes <10){
+      minutes = "0" + minutes;
+      }
+      if(second <10){
+      second = "0" + second ;
+      }
+
+      var time = year+"-"+month+"-"+date+" "+hour+":"+minutes+":"+second; //2009-06-12 17:18:05
+      // alert(time);
+      return time;
+    }
+</script>
+</html>
