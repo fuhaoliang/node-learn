@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>gradient</title>
+</head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+    <defs>
+      <linearGradient id="myGradient"
+        x1="0%" y1="0%"
+        x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#f00" />
+        <stop offset="100%" stop-color="#0FF" />
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="300" height="200"
+    fill="url(#myGradient)"/>
+  </svg>
+
+</body>
+</html>

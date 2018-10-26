@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>d3操作text</title>
+</head>
+<!-- <script src="../js/d3.min.js"></script> -->
+<script src="https://cdn.bootcss.com/d3/3.2.2/d3.v3.min.js"></script>
+<body>
+  <p>Cat</p>
+  <p>Dog</p>
+  <script>
+    var p = d3.select('body').selectAll('p')
+            .text('Hello World!')
+        p.style('fontSize', '24px')
+          .style('color', 'red')
+    var w = 400;
+    var h = 400;
+    var svg = d3.select('body').append('svg')
+                .attr({'width': w, 'height': h});
+        svg.append('circle').attr({'cx': '50px', 'cy': '50px', 'r': '50px', 'fill': 'red'})
+
+  </script>
+</body>
+</html>
